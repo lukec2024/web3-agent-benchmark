@@ -1,0 +1,106 @@
+{
+  "id": "swap_exact_tokens_for_sol",
+  "version": "2.0.0",
+  "category": "defi_operations",
+  "subcategory": "balance",
+  "difficulty": "medium",
+  "title": "Jupiter Swap - Token to SOL",
+  "natural_language_templates": [
+    "Swap {amount} USDT for SOL on Jupiter",
+    "Exchange {amount} USDT to SOL using Jupiter Router",
+    "Convert {amount} USDT tokens to SOL through Jupiter V6",
+    "Trade {amount} USDT for SOL on Jupiter with {slippage}% slippage tolerance"
+  ],
+  "description": [
+  ],
+  "blockchain": {
+    "chain": "Solana",
+    "network": "mainnet"
+  },
+  "parameters": {
+    "token_address": {
+      "type": "address",
+      "role": "token_in",
+      "description": "Input token to swap (USDT by default)",
+      "generation": {
+        "method": "fixed",
+        "value": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+        "comment": "USDT on Solana"
+      }
+    },
+    "amount": {
+      "type": "number",
+      "role": "swap_amount",
+      "description": "Amount of tokens to swap",
+      "generation": {
+        "method": "random",
+        "min": 20,
+        "max": 50,
+        "decimals": 2
+      }
+    },
+    "slippage": {
+      "type": "number",
+      "role": "slippage_tolerance",
+      "description": "Slippage tolerance percentage",
+      "generation": {
+        "method": "fixed",
+        "value": 5.0
+      }
+    }
+  },
+  "validation": {
+    "pre_conditions": [
+      {
+        "type": "token_balance_check",
+        "description": "Agent must have sufficient token balance"
+      }
+    ],
+    "post_conditions": [
+      {
+        "type": "transaction_success",
+        "weight": 30,
+        "description": "Transaction executed successfully"
+      },
+      {
+        "type": "balance_change",
+        "weight": 35,
+        "compute": 1,
+        "expected": "0",
+        "tolerance": 0.8,
+        "description": "SOL balance decreased by swap amount (plus gas)"
+      },
+      {
+        "type": "balance_change",
+        "weight": 35,
+        "expected": "{amount}",
+        "mint": "{token_address}",
+        "tolerance": 200,
+        "description": "Token balance increased (received output tokens)"
+      }
+    ]
+  },
+  "metadata": {
+    "tags": [
+      "jupiter",
+      "swap",
+      "dex",
+      "amm",
+      "defi",
+      "token-to-sol",
+      "approval-required"
+    ],
+    "estimated_gas": 180000,
+    "requires_contract": true,
+    "requires_approval": true,
+    "network": "mainnet",
+    "dex": "Jupiter V2",
+    "swap_type": "exact_input",
+    "difficulty_notes": [
+      "Requires understanding of token approval mechanism",
+      "Two-step process: approve + swap",
+      "Requires understanding of swap paths",
+      "Must handle SOL balance change correctly (minus gas)"
+    ]
+  }
+}

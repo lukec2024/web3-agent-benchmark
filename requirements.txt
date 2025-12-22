@@ -1,0 +1,12 @@
+flask
+httpx
+dotenv
+Flask-SQLAlchemy
+psycopg2-binary
+sqlalchemy-serializer
+flask_migrate
+bson
+solders
+base58
+solana
+flufl.lock
