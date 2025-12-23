@@ -7,7 +7,12 @@ def config_debug_mode():
         logging.basicConfig()
         logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
-if __name__ == '__main__':
+def create_app():
     config_debug_mode()
     register_all_routes(app)
-    app.run(port=7007, debug=False)
+    return app
+
+server = create_app()
+
+if __name__ == '__main__':
+    server.run(port=7007, debug=False)
